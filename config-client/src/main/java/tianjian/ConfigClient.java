@@ -1,5 +1,6 @@
 package tianjian;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigClient {
 
+    @Value("${bar}")
+    private String bar;
+
     @RequestMapping("/")
     public String home() {
-        return "Hello World!";
+        return bar;
     }
 
     public static void main(String[] args) {

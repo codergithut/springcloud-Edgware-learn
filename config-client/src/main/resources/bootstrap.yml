@@ -1,6 +1,5 @@
-#spring:
-#  cloud:
-#    config:
-#      server:
-#        git:
-#          uri: https://github.com/codergithut/springcloud-lastest/tree/master/configuration
+spring:
+  application:
+    name: foo
+  profiles:
+    active: development,mysql

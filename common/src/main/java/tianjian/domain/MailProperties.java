@@ -3,8 +3,7 @@ package tianjian.domain;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 /**
  * Created by Administrator on 2017/12/20.
@@ -33,14 +32,12 @@ public class MailProperties {
         }
     }
 
-    @NotBlank
     private String host;
     private int port;
     private String from;
     private String username;
     private String password;
 
-    @NotNull
     private Smtp smtp;
 
     public String getHost() {
