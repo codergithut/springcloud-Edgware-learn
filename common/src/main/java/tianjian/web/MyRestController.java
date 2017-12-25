@@ -3,7 +3,7 @@ package tianjian.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tianjian.config.ElasticsearchConfig;
+import tianjian.config.ElasticsearchJPAConfig;
 import tianjian.domain.MailProperties;
 import tianjian.domain.MailPropertiesCopy;
 import tianjian.domain.SimpleDataBase;
@@ -23,7 +23,7 @@ public class MyRestController {
     MailProperties mailProperties;
 
     @Autowired
-    ElasticsearchConfig elasticsearchConfig;
+    ElasticsearchJPAConfig elasticsearchConfig;
 
     @GetMapping("test")
     public String testRestController() {
