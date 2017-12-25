@@ -4,8 +4,8 @@ package tianjian.service.impl;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tianjian.domain.dev.Article;
-import tianjian.domain.dev.Comment;
+import tianjian.domain.client.Article;
+import tianjian.domain.client.Comment;
 import tianjian.service.ArticleBaseService;
 import tianjian.util.EsUtil;
 

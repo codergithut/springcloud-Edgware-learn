@@ -1,7 +1,7 @@
 package tianjian.service;
 
-import tianjian.domain.dev.Article;
-import tianjian.domain.dev.Comment;
+import tianjian.domain.client.Article;
+import tianjian.domain.client.Comment;
 
 import java.io.IOException;
 import java.util.List;

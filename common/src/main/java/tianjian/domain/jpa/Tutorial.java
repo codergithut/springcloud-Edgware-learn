@@ -1,4 +1,4 @@
-package tianjian.domain;
+package tianjian.domain.jpa;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 

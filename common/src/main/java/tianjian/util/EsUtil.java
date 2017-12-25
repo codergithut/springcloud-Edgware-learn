@@ -8,7 +8,7 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import tianjian.domain.dev.EsEntity;
+import tianjian.domain.client.EsEntity;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
