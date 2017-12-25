@@ -4,8 +4,8 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.junit.Before;
 import org.junit.Test;
-import tianjian.domain.dev.Article;
-import tianjian.domain.dev.Comment;
+import tianjian.domain.client.Article;
+import tianjian.domain.client.Comment;
 import tianjian.util.EsUtil;
 
 import java.io.IOException;
