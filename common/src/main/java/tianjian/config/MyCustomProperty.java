@@ -1,8 +1,6 @@
 package tianjian.config;
 
-import io.searchbox.client.config.HttpClientConfig;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.elasticsearch.jest.HttpClientConfigBuilderCustomizer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,15 +27,6 @@ public class MyCustomProperty {
     @ConfigurationProperties(prefix = "mail")
     public MailPropertiesCopy connectionSettings(){
         return new MailPropertiesCopy();
-    }
-
-    static class HttpSettingsCustomizer implements HttpClientConfigBuilderCustomizer {
-
-        @Override
-        public void customize(HttpClientConfig.Builder builder) {
-            builder.maxTotalConnection(100).defaultMaxTotalConnectionPerRoute(5);
-        }
-
     }
 
 }
