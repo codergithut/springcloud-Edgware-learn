@@ -1,4 +1,36 @@
+server:
+    address: 127.0.0.1
+---
 spring:
-  elasticsearch:
-    host: 127.0.0.1
-    port: 9200
+    profiles: development
+server:
+    address: 127.0.0.1
+---
+spring:
+    profiles: production
+server:
+    address: 192.168.1.120
+
+environments:
+    dev:
+        url: http://dev.bar.com
+        name: Developer Setup
+    prod:
+        url: http://foo.bar.com
+        name: My Cool App
+
+foo:
+  list:
+    - name: my name
+      description: my description
+---
+spring:
+  profiles: dev
+foo:
+  list:
+    - name: my another name
+
+my:
+   servers:
+       - dev.bar.com
+       - foo.bar.com

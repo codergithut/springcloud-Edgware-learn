@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tianjian.domain.FooProperties;
 import tianjian.domain.MailPropertiesCopy;
 import tianjian.domain.SimpleDataBase;
 
@@ -21,6 +22,12 @@ public class MyCustomProperty {
         SimpleDataBase simpleDataBase = new SimpleDataBase();
         simpleDataBase.setUrl(msg);
         return simpleDataBase;
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "foo")
+    public FooProperties getFoo() {
+        return new FooProperties();
     }
 
     @Bean
