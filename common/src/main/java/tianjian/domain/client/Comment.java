@@ -103,4 +103,9 @@ public class Comment extends EsEntity {
     public String getId() {
         return commentid;
     }
+
+    @Override
+    public void setId(String id) {
+        this.commentid = id;
+    }
 }

@@ -43,6 +43,11 @@ public class Article extends EsEntity{
     private String url;
 
     /**
+     * 类别ID
+     */
+    private String categoryid;
+
+    /**
      * 点赞数
      */
     private int rate;
@@ -124,8 +129,22 @@ public class Article extends EsEntity{
         this.updatetime = updatetime;
     }
 
+    public String getCategoryid() {
+        return categoryid;
+    }
+
+    public void setCategoryid(String categoryid) {
+        this.categoryid = categoryid;
+    }
+
     @Override
     public String getId() {
         return answersid;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.answersid = id;
+
     }
 }

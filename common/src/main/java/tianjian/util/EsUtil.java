@@ -8,33 +8,32 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import tianjian.domain.client.EsEntity;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import static tianjian.config.Constant.SEARCH_DSL;
-
 
 public class EsUtil {
 
     /**
      *
      * @param index 索引
-     * @param docID 文章ID
      * @param data 数据体
      * @param restClient 客户端
      * @return
      * @throws IOException
      * @description 将数据插入到ES服务器中
      */
-    public static boolean addBeanToEs(String index, String docID, EsEntity data, RestClient restClient) throws IOException {
-        Response response = commonDoEs("PUT", index + "/"  + docID, getHttpEntityByEsEntity(data, "add"), restClient);
-        return true;
+    public static String addBeanToEs(String index, EsEntity data, RestClient restClient) throws IOException, InterruptedException {
+        String id = UUID.randomUUID().toString();
+        data.setId(id);
+        Response response = commonDoEs("PUT", index + "/"  + id, getHttpEntityByEsEntity(data, "add"), restClient);
+        //Thread.sleep(1000l);
+        return id;
     }
 
     /**
@@ -46,11 +45,12 @@ public class EsUtil {
      * @throws IOException
      * @description 根据文章ID删除ES数据
      */
-    public static boolean deleteBeanToEs(String index, String docID, RestClient restClient) throws IOException {
+    public static boolean deleteBeanToEs(String index, String docID, RestClient restClient) throws IOException, InterruptedException {
         try{
-            Response response = commonDoEs("DELETE", index + "/"  + docID, null, restClient);
+            Response response = commonDoEs("DELETE", index + "/"  + docID + "?refresh", null, restClient);
         }catch (IOException e) {
         }
+        //Thread.sleep(1000l);
         return true;
     }
 
@@ -63,11 +63,14 @@ public class EsUtil {
      * @throws IOException
      * @description 根据文章ID跟新ES数据
      */
-    public static boolean updateBeanToEs(String index,EsEntity data, RestClient restClient) {
+    public static boolean updateBeanToEs(String index,EsEntity data, RestClient restClient) throws InterruptedException {
         try{
-            Response response = commonDoEs("POST", index + "/"  + data.getId() + "/_update", getHttpEntityByEsEntity(data, "update"), restClient);
+            Response response = commonDoEs("POST", index + "/"  + data.getId() + "/_update?refresh", getHttpEntityByEsEntity(data, "update"), restClient);
+            System.out.println("============================= update " + EntityUtils.toString(response.getEntity()) + "=============================");
         }catch (IOException e) {
         }
+
+       // Thread.sleep(1000l);
         return true;
     }
 
@@ -83,11 +86,16 @@ public class EsUtil {
      * @throws IOException
      * @description 查询文章信息
      */
-    public static <T> List<T> searchBeanFrommEs(String index,String resoureId, String fieldName, RestClient restClient, Class<T> t) throws IOException {
-        String s = EntityUtils.toString(commonDoEs("GET", SEARCH_DSL.replace("${index}",index)
-                .replace("${fileName}", fieldName)
-                .replace("${fileValue}", resoureId), null, restClient).getEntity());
-        return changeStringToBean(s, t);
+    public static <T extends EsEntity> PageImpl<T> searchBeanFrommEs(String index, String resoureId, String fieldName, RestClient restClient, PageRequest page,Class<T> t) throws IOException, InterruptedException {
+        Response response = commonDoEs("GET", SEARCH_DSL.replace("${index}",index)
+                        .replace("${fileName}", fieldName)
+                        .replace("${fileValue}", resoureId)
+                        .replace("${size}", page.getPageSize() + "")
+                        .replace("${from}", (page.getPageNumber()-1) * page.getPageSize() + ""),
+                null, restClient);
+        String s = EntityUtils.toString(response.getEntity());
+        System.out.println();
+        return changeStringToBean(s, t, page);
     }
 
 
@@ -118,7 +126,7 @@ public class EsUtil {
      * @throws UnsupportedEncodingException
      * @description 封装的请求对象
      */
-    private static HttpEntity getHttpEntityByEsEntity(EsEntity esEntity, String type) throws UnsupportedEncodingException {
+    public static HttpEntity getHttpEntityByEsEntity(EsEntity esEntity, String type) throws UnsupportedEncodingException {
         if(esEntity == null) {
             return null;
         }
@@ -140,14 +148,17 @@ public class EsUtil {
      * @param <T> 泛型
      * @return 转换后的对象
      */
-    public static <T> List<T> changeStringToBean(String data, Class<T> t){
+    public static <T extends EsEntity> PageImpl<T> changeStringToBean(String data, Class<T> t, PageRequest pageRequest){
 
         List<T> datas = new ArrayList<T>();
 
         JSONObject jsonObject = JSON.parseObject(data.replaceAll("/n", ""));
         JSONObject jsonObject1 = (JSONObject)jsonObject.get("hits");
 
+        Long total = Long.valueOf(jsonObject1.get("total").toString());
+
         JSONArray jsonObject2 = (JSONArray)jsonObject1.get("hits");
+
 
 
         for(JSONObject jsonObject3 : jsonObject2.toJavaList(JSONObject.class)) {
@@ -155,6 +166,9 @@ public class EsUtil {
             T t1 = JSONObject.parseObject(jsonObject3.getString("_source"), t);
             datas.add(t1);
         }
-        return datas;
+
+        PageImpl<T> pageimpl = new PageImpl<T>(datas, pageRequest, total);
+
+        return pageimpl;
     }
 }
