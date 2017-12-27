@@ -1,8 +1,8 @@
 package tianjian.service.impl;
 
-
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import tianjian.domain.client.Article;
 import tianjian.domain.client.Comment;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import static tianjian.config.Constant.INDEX_ARTICLE;
 import static tianjian.config.Constant.INDEX_COMMENT;
+
 
 /**
  * 见接口说明
@@ -28,52 +29,80 @@ public class ArticleBaseServiceImpl implements ArticleBaseService {
     RestClient restClient;
 
     @Override
-    public Article getArticleById(String id) throws IOException {
-        return EsUtil.searchBeanFrommEs(INDEX_ARTICLE,id, "answersid", restClient, Article.class).get(0);
+    public Article getArticleById(String id) throws IOException, InterruptedException {
+        PageRequest pageRequest = new PageRequest(1,1);
+        List<Article> articles = EsUtil.searchBeanFrommEs(INDEX_ARTICLE, id, "answersid",
+                restClient, pageRequest, Article.class).getContent();
+        if (articles.size() > 0) {
+            return articles.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public Comment getCommentById(String id) throws IOException {
-        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,id, "commentid", restClient, Comment.class).get(0);
+    public PageImpl<Article> getArticleBydCategoryid(String categoryid, PageRequest pageRequest) throws IOException, InterruptedException {
+        return EsUtil.searchBeanFrommEs(INDEX_ARTICLE,categoryid,
+                categoryid, restClient, pageRequest, Article.class);
     }
 
     @Override
-    public List<Comment> getCommentByAritcleId(String articleId) throws IOException {
-        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,articleId, "replyid", restClient, Comment.class);
+    public Comment getCommentById(String id) throws IOException, InterruptedException {
+        PageRequest pageRequest = new PageRequest(1,1);
+        List<Comment> comments = EsUtil.searchBeanFrommEs(INDEX_COMMENT,id,
+                "commentid", restClient, pageRequest, Comment.class).getContent();
+        if(comments.size() > 0) {
+            return comments.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public List<Comment> getCommentByCommentId(String commmentId) throws IOException {
-        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,commmentId, "replyid", restClient, Comment.class);
+    public PageImpl<Comment> getCommentByAritcleId(String articleId, PageRequest pageRequest) throws IOException, InterruptedException {
+        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,articleId, "replyid", restClient,pageRequest, Comment.class);
     }
 
     @Override
-    public boolean deleteArticleById(String articleId) throws IOException {
+    public PageImpl<Comment> getCommentByCommentId(String commmentId, PageRequest pageRequest) throws IOException, InterruptedException {
+        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,commmentId, "replyid", restClient,pageRequest, Comment.class);
+    }
+
+    @Override
+    public boolean deleteArticleById(String articleId) throws IOException, InterruptedException {
         return EsUtil.deleteBeanToEs(INDEX_ARTICLE, articleId,restClient);
     }
 
     @Override
-    public boolean deleteCommentById(String commentId) throws IOException {
+    public boolean deleteCommentById(String commentId) throws IOException, InterruptedException {
         return EsUtil.deleteBeanToEs(INDEX_COMMENT, commentId,restClient);
     }
 
     @Override
-    public boolean addArticle(Article article) throws IOException {
-        return EsUtil.addBeanToEs(INDEX_ARTICLE, article.getAnswersid(), article, restClient);
+    public String addArticle(Article article) throws IOException, InterruptedException {
+        return EsUtil.addBeanToEs(INDEX_ARTICLE, article, restClient);
     }
 
     @Override
-    public boolean addComment(Comment comment) throws IOException {
-        return EsUtil.addBeanToEs(INDEX_COMMENT, comment.getCommentid(), comment, restClient);
+    public String addComment(Comment comment) throws IOException, InterruptedException {
+        return EsUtil.addBeanToEs(INDEX_COMMENT, comment, restClient);
     }
 
     @Override
-    public boolean updateCommentEsData(Comment comment) {
+    public boolean updateCommentEsData(Comment comment) throws InterruptedException {
         return EsUtil.updateBeanToEs(INDEX_COMMENT, comment, restClient);
     }
 
     @Override
-    public boolean updateArticleEsData(Article article) {
+    public boolean updateArticleEsData(Article article) throws InterruptedException {
         return EsUtil.updateBeanToEs(INDEX_ARTICLE, article, restClient);
+    }
+
+    public RestClient getRestClient() {
+        return restClient;
+    }
+
+    public void setRestClient(RestClient restClient) {
+        this.restClient = restClient;
     }
 }
