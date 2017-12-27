@@ -11,11 +11,14 @@ import org.elasticsearch.client.RestClient;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import tianjian.domain.client.EsEntity;
+import tianjian.domain.client.search.DSLParam;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+
 import static tianjian.config.Constant.SEARCH_DSL;
+
 
 public class EsUtil {
 
@@ -32,7 +35,6 @@ public class EsUtil {
         String id = UUID.randomUUID().toString();
         data.setId(id);
         Response response = commonDoEs("PUT", index + "/"  + id, getHttpEntityByEsEntity(data, "add"), restClient);
-        //Thread.sleep(1000l);
         return id;
     }
 
@@ -50,7 +52,6 @@ public class EsUtil {
             Response response = commonDoEs("DELETE", index + "/"  + docID + "?refresh", null, restClient);
         }catch (IOException e) {
         }
-        //Thread.sleep(1000l);
         return true;
     }
 
@@ -66,32 +67,42 @@ public class EsUtil {
     public static boolean updateBeanToEs(String index,EsEntity data, RestClient restClient) throws InterruptedException {
         try{
             Response response = commonDoEs("POST", index + "/"  + data.getId() + "/_update?refresh", getHttpEntityByEsEntity(data, "update"), restClient);
-            System.out.println("============================= update " + EntityUtils.toString(response.getEntity()) + "=============================");
         }catch (IOException e) {
         }
-
-       // Thread.sleep(1000l);
         return true;
     }
 
     /**
      *
      * @param index 索引
-     * @param resoureId 资源ID
-     * @param fieldName 文件名称
      * @param restClient 客户端
+     * @param dslParam DSL查询条件封装
      * @param t 需要转换的class
      * @param <T> 泛型对象
      * @return
      * @throws IOException
      * @description 查询文章信息
      */
-    public static <T extends EsEntity> PageImpl<T> searchBeanFrommEs(String index, String resoureId, String fieldName, RestClient restClient, PageRequest page,Class<T> t) throws IOException, InterruptedException {
-        Response response = commonDoEs("GET", SEARCH_DSL.replace("${index}",index)
-                        .replace("${fileName}", fieldName)
-                        .replace("${fileValue}", resoureId)
-                        .replace("${size}", page.getPageSize() + "")
-                        .replace("${from}", (page.getPageNumber()-1) * page.getPageSize() + ""),
+    public static <T extends EsEntity> PageImpl<T> searchBeanFrommEs(String index, DSLParam dslParam, RestClient restClient, PageRequest page, Class<T> t) throws IOException, InterruptedException {
+        String searchDSL = SEARCH_DSL.replace("${index}",index)
+                .replace("${size}", page.getPageSize() + "")
+                .replace("${from}", (page.getPageNumber()-1) * page.getPageSize() + "");
+
+        if(dslParam.getSortParam().size() == 0) {
+            searchDSL = searchDSL.replace("${sortName}:${type}", "");
+        } else {
+            searchDSL = searchDSL.replace("${sortName}", dslParam.getSortParam().get(0).getFileName())
+                    .replace("${type}", dslParam.getSortParam().get(0).getSortEnum().getName());
+        }
+
+        if(dslParam.getSearchParam().size() == 0) {
+            searchDSL = searchDSL.replace("${fileName}:${fileValue}", "");
+        } else {
+            searchDSL = searchDSL.replace("${fileName}", dslParam.getSearchParam().get(0).getFileName())
+                    .replace("${fileValue}", dslParam.getSearchParam().get(0).getFileValue());
+        }
+
+        Response response = commonDoEs("GET", searchDSL,
                 null, restClient);
         String s = EntityUtils.toString(response.getEntity());
         System.out.println();
@@ -158,8 +169,6 @@ public class EsUtil {
         Long total = Long.valueOf(jsonObject1.get("total").toString());
 
         JSONArray jsonObject2 = (JSONArray)jsonObject1.get("hits");
-
-
 
         for(JSONObject jsonObject3 : jsonObject2.toJavaList(JSONObject.class)) {
             System.out.println(jsonObject3.getString("_source"));

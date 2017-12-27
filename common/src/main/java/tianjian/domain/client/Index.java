@@ -1,5 +1,7 @@
 package tianjian.domain.client;
 
+import java.util.List;
+
 public class Index extends EsEntity{
 
     /**
@@ -23,9 +25,16 @@ public class Index extends EsEntity{
     private String description;
 
     /**
+     * 排序字段
+     */
+    private int sort;
+
+    /**
      * 父资源ID(每个资源有一个或0个父目录)
      */
     private String parentid;
+
+    private List<String> children;
 
     @Override
     public String getId() {
@@ -67,5 +76,21 @@ public class Index extends EsEntity{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    public List<String> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<String> children) {
+        this.children = children;
     }
 }

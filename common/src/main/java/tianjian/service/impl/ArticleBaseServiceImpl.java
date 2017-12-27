@@ -2,10 +2,13 @@ package tianjian.service.impl;
 
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tianjian.domain.client.Article;
 import tianjian.domain.client.Comment;
+import tianjian.domain.client.search.DSLParam;
+import tianjian.domain.client.search.SortEnum;
 import tianjian.service.ArticleBaseService;
 import tianjian.util.EsUtil;
 
@@ -31,7 +34,11 @@ public class ArticleBaseServiceImpl implements ArticleBaseService {
     @Override
     public Article getArticleById(String id) throws IOException, InterruptedException {
         PageRequest pageRequest = new PageRequest(1,1);
-        List<Article> articles = EsUtil.searchBeanFrommEs(INDEX_ARTICLE, id, "answersid",
+
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("answersid", id);
+
+        List<Article> articles = EsUtil.searchBeanFrommEs(INDEX_ARTICLE, dslParam,
                 restClient, pageRequest, Article.class).getContent();
         if (articles.size() > 0) {
             return articles.get(0);
@@ -42,15 +49,18 @@ public class ArticleBaseServiceImpl implements ArticleBaseService {
 
     @Override
     public PageImpl<Article> getArticleBydCategoryid(String categoryid, PageRequest pageRequest) throws IOException, InterruptedException {
-        return EsUtil.searchBeanFrommEs(INDEX_ARTICLE,categoryid,
-                categoryid, restClient, pageRequest, Article.class);
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("categoryid", categoryid);
+
+        return EsUtil.searchBeanFrommEs(INDEX_ARTICLE,dslParam, restClient, pageRequest, Article.class);
     }
 
     @Override
     public Comment getCommentById(String id) throws IOException, InterruptedException {
         PageRequest pageRequest = new PageRequest(1,1);
-        List<Comment> comments = EsUtil.searchBeanFrommEs(INDEX_COMMENT,id,
-                "commentid", restClient, pageRequest, Comment.class).getContent();
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("commentid", id);
+        List<Comment> comments = EsUtil.searchBeanFrommEs(INDEX_COMMENT,dslParam, restClient, pageRequest, Comment.class).getContent();
         if(comments.size() > 0) {
             return comments.get(0);
         } else {
@@ -60,12 +70,16 @@ public class ArticleBaseServiceImpl implements ArticleBaseService {
 
     @Override
     public PageImpl<Comment> getCommentByAritcleId(String articleId, PageRequest pageRequest) throws IOException, InterruptedException {
-        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,articleId, "replyid", restClient,pageRequest, Comment.class);
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("replyid", articleId);
+        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,dslParam, restClient,pageRequest, Comment.class);
     }
 
     @Override
     public PageImpl<Comment> getCommentByCommentId(String commmentId, PageRequest pageRequest) throws IOException, InterruptedException {
-        return EsUtil.searchBeanFrommEs(INDEX_COMMENT,commmentId, "replyid", restClient,pageRequest, Comment.class);
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("replyid", commmentId);
+        return EsUtil.searchBeanFrommEs(INDEX_COMMENT, dslParam, restClient, pageRequest, Comment.class);
     }
 
     @Override

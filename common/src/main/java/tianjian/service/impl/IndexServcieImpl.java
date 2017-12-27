@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tianjian.domain.client.Index;
+import tianjian.domain.client.search.DSLParam;
+import tianjian.domain.client.search.SortEnum;
 import tianjian.service.IndexService;
 import tianjian.util.EsUtil;
 
@@ -12,7 +14,6 @@ import java.io.IOException;
 import java.util.List;
 
 import static tianjian.config.Constant.INDEX_MY;
-
 
 @Service
 public class IndexServcieImpl implements IndexService {
@@ -41,8 +42,9 @@ public class IndexServcieImpl implements IndexService {
     @Override
     public Index searchIndexById(String id) throws IOException, InterruptedException {
         PageRequest pageRequest = new PageRequest(1,1);
-        List<Index> indexs = EsUtil.searchBeanFrommEs(INDEX_MY,id,
-                "id", restClient, pageRequest, Index.class).getContent();
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("sort",  SortEnum.ASC).setSearchParam("id", id);
+        List<Index> indexs = EsUtil.searchBeanFrommEs(INDEX_MY, dslParam, restClient, pageRequest, Index.class).getContent();
         if(indexs.size() > 0) {
             return indexs.get(0);
         } else {
@@ -53,8 +55,11 @@ public class IndexServcieImpl implements IndexService {
     @Override
     public List<Index> getParentIndex() throws IOException, InterruptedException {
         PageRequest pageRequest = new PageRequest(1,1000);
-        List<Index> indexs = EsUtil.searchBeanFrommEs(INDEX_MY,"true",
-                "isroot", restClient, pageRequest, Index.class).getContent();
+
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("sort",  SortEnum.ASC).setSearchParam("isroot", "true");
+
+        List<Index> indexs = EsUtil.searchBeanFrommEs(INDEX_MY,dslParam, restClient, pageRequest, Index.class).getContent();
         if(indexs.size() > 0) {
             return indexs;
         } else {
@@ -65,8 +70,9 @@ public class IndexServcieImpl implements IndexService {
     @Override
     public List<Index> getIndexByParentId(String parentId) throws IOException, InterruptedException {
         PageRequest pageRequest = new PageRequest(1,1000);
-        List<Index> indexs = EsUtil.searchBeanFrommEs(INDEX_MY,parentId,
-                "parentid", restClient, pageRequest, Index.class).getContent();
+        DSLParam dslParam = new DSLParam();
+        dslParam.setSortParam("sort",  SortEnum.ASC).setSearchParam("parentid", parentId);
+        List<Index> indexs = EsUtil.searchBeanFrommEs(INDEX_MY,dslParam, restClient, pageRequest, Index.class).getContent();
         if(indexs.size() > 0) {
             return indexs;
         } else {
