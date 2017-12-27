@@ -1,12 +1,12 @@
-package tianjian.config;
+package tianjian.config.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tianjian.domain.FooProperties;
-import tianjian.domain.MailPropertiesCopy;
-import tianjian.domain.SimpleDataBase;
+import tianjian.domain.common.FooProperties;
+import tianjian.domain.common.MailPropertiesCopy;
+import tianjian.domain.common.SimpleDataBase;
 
 /**
  * Created by Administrator on 2017/12/20.

@@ -1,4 +1,4 @@
-package tianjian.domain.client.search;
+package tianjian.domain.elas.search;
 
 import java.util.ArrayList;
 import java.util.List;

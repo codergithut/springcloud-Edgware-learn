@@ -1,4 +1,4 @@
-package tianjian.config;
+package tianjian.config.elas;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;

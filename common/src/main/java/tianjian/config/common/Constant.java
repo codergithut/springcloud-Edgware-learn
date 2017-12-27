@@ -1,4 +1,4 @@
-package tianjian.config;
+package tianjian.config.common;
 
 public class Constant {
     /**

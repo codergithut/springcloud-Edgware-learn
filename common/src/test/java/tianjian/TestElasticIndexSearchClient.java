@@ -8,7 +8,7 @@ import org.elasticsearch.client.RestClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import tianjian.domain.client.Index;
+import tianjian.domain.elas.Index;
 import tianjian.service.impl.IndexServcieImpl;
 import tianjian.util.EsUtil;
 

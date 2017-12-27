@@ -3,8 +3,8 @@ package tianjian.service;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import tianjian.domain.client.Article;
-import tianjian.domain.client.Comment;
+import tianjian.domain.elas.Article;
+import tianjian.domain.elas.Comment;
 
 import java.io.IOException;
 

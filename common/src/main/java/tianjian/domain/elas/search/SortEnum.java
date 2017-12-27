@@ -1,4 +1,4 @@
-package tianjian.domain.client.search;
+package tianjian.domain.elas.search;
 
 /**
  * Created by Administrator on 2017/12/13.

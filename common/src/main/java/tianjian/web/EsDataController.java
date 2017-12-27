@@ -6,9 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tianjian.domain.client.Article;
-import tianjian.domain.client.Comment;
-import tianjian.domain.client.Index;
+import tianjian.domain.elas.Article;
+import tianjian.domain.elas.Comment;
+import tianjian.domain.elas.Index;
 import tianjian.service.ArticleBaseService;
 import tianjian.service.IndexService;
 

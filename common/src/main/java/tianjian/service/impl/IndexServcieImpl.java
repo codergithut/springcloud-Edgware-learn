@@ -4,16 +4,16 @@ import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import tianjian.domain.client.Index;
-import tianjian.domain.client.search.DSLParam;
-import tianjian.domain.client.search.SortEnum;
+import tianjian.domain.elas.Index;
+import tianjian.domain.elas.search.DSLParam;
+import tianjian.domain.elas.search.SortEnum;
 import tianjian.service.IndexService;
 import tianjian.util.EsUtil;
 
 import java.io.IOException;
 import java.util.List;
 
-import static tianjian.config.Constant.INDEX_MY;
+import static tianjian.config.common.Constant.INDEX_MY;
 
 @Service
 public class IndexServcieImpl implements IndexService {

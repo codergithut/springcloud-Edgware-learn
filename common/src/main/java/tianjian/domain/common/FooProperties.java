@@ -1,6 +1,4 @@
-package tianjian.domain;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
+package tianjian.domain.common;
 
 import java.util.ArrayList;
 import java.util.List;

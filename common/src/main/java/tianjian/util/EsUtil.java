@@ -10,14 +10,14 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import tianjian.domain.client.EsEntity;
-import tianjian.domain.client.search.DSLParam;
+import tianjian.domain.elas.EsEntity;
+import tianjian.domain.elas.search.DSLParam;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
-import static tianjian.config.Constant.SEARCH_DSL;
+import static tianjian.config.common.Constant.SEARCH_DSL;
 
 
 public class EsUtil {

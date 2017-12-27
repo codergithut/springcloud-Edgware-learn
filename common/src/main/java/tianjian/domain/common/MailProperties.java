@@ -1,11 +1,23 @@
-package tianjian.domain;
+package tianjian.domain.common;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+
 
 /**
  * Created by Administrator on 2017/12/20.
  */
-public class MailPropertiesCopy {
+@Component
+@ConfigurationProperties(prefix = "mail")
+@Validated
+public class MailProperties {
     public static class Smtp {
+
         private boolean auth;
+
         private boolean starttlsEnable;
 
         public boolean isAuth() {
@@ -25,7 +37,9 @@ public class MailPropertiesCopy {
         }
     }
 
+    @NotNull
     private String host;
+    @NotNull
     private int port;
     private String from;
     private String username;

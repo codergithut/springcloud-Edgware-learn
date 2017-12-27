@@ -1,4 +1,4 @@
-package tianjian.domain.client;
+package tianjian.domain.elas;
 
 import com.alibaba.fastjson.JSON;
 

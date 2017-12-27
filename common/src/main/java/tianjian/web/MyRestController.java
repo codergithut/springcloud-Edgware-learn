@@ -3,11 +3,12 @@ package tianjian.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tianjian.config.Config;
-import tianjian.domain.FooProperties;
-import tianjian.domain.MailProperties;
-import tianjian.domain.MailPropertiesCopy;
-import tianjian.domain.SimpleDataBase;
+import tianjian.config.common.Config;
+import tianjian.domain.common.FooProperties;
+import tianjian.domain.common.MailProperties;
+import tianjian.domain.common.MailPropertiesCopy;
+import tianjian.domain.common.SimpleDataBase;
+import tianjian.exception.web.rest.RestHandlerException;
 
 import java.util.List;
 
@@ -40,5 +41,10 @@ public class MyRestController {
                 + mailPropertiesCopy.getPort()
                 + ", mailProperties port is :"
                 + mailProperties.getPort();
+    }
+
+    @GetMapping("exception")
+    public String testException() throws RestHandlerException {
+        throw new RestHandlerException("人为异常");
     }
 }

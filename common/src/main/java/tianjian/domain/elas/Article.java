@@ -1,4 +1,4 @@
-package tianjian.domain.client;
+package tianjian.domain.elas;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package tianjian.domain;
+package tianjian.domain.common;
 
 public class MyPojo {
     private String name;

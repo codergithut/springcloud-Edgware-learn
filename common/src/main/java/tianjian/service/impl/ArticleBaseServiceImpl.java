@@ -5,18 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import tianjian.domain.client.Article;
-import tianjian.domain.client.Comment;
-import tianjian.domain.client.search.DSLParam;
-import tianjian.domain.client.search.SortEnum;
+import tianjian.domain.elas.Article;
+import tianjian.domain.elas.Comment;
+import tianjian.domain.elas.search.DSLParam;
+import tianjian.domain.elas.search.SortEnum;
 import tianjian.service.ArticleBaseService;
 import tianjian.util.EsUtil;
 
 import java.io.IOException;
 import java.util.List;
 
-import static tianjian.config.Constant.INDEX_ARTICLE;
-import static tianjian.config.Constant.INDEX_COMMENT;
+import static tianjian.config.common.Constant.INDEX_ARTICLE;
+import static tianjian.config.common.Constant.INDEX_COMMENT;
 
 
 /**

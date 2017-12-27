@@ -1,7 +1,7 @@
 package tianjian.service;
 
 
-import tianjian.domain.client.Index;
+import tianjian.domain.elas.Index;
 
 import java.io.IOException;
 import java.util.List;

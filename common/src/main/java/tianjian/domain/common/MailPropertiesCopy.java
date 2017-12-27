@@ -1,16 +1,9 @@
-package tianjian.domain;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
-
+package tianjian.domain.common;
 
 /**
  * Created by Administrator on 2017/12/20.
  */
-@Component
-@ConfigurationProperties(prefix = "mail")
-public class MailProperties {
+public class MailPropertiesCopy {
     public static class Smtp {
         private boolean auth;
         private boolean starttlsEnable;
