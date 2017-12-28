@@ -47,4 +47,9 @@ public class MyRestController {
     public String testException() throws RestHandlerException {
         throw new RestHandlerException("人为异常");
     }
+
+    @GetMapping("xx")
+    public String testHelloWorld() {
+        return "Hello World";
+    }
 }
