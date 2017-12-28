@@ -15,6 +15,9 @@ import tianjian.domain.json.User;
 
 import java.io.IOException;
 
+/**
+ * 序列化和反序列化的配置
+ */
 @JsonComponent
 public class UserCombinedSerializer {
 

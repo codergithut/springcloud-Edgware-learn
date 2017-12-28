@@ -1,0 +1,10 @@
+package tianjian.dao;
+
+import org.springframework.data.repository.Repository;
+import org.springframework.stereotype.Service;
+import tianjian.bean.User;
+
+@Service
+public interface UserRepository extends Repository<User, Long> {
+    User findByUsername(String username);
+}

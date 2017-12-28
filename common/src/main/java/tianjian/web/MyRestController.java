@@ -2,13 +2,16 @@ package tianjian.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import tianjian.config.common.Config;
+import tianjian.domain.bean.Details;
 import tianjian.domain.common.FooProperties;
 import tianjian.domain.common.MailProperties;
 import tianjian.domain.common.MailPropertiesCopy;
 import tianjian.domain.common.SimpleDataBase;
 import tianjian.exception.web.rest.RestHandlerException;
+import tianjian.service.MyBean;
 
 import java.util.List;
 
@@ -28,6 +31,9 @@ public class MyRestController {
 
     @Autowired
     Config config;
+
+    @Autowired
+    MyBean myBean;
 
     @Autowired
     FooProperties fooProperties;
@@ -51,5 +57,12 @@ public class MyRestController {
     @GetMapping("xx")
     public String testHelloWorld() {
         return "Hello World";
+    }
+
+    @GetMapping("/{name}/details")
+    public Details getDetails(@PathVariable("name") String name) {
+        Details details = new Details();
+        details.setName(name);
+        return details;
     }
 }
