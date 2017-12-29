@@ -20,6 +20,13 @@ public class CacheClassAnnotationInfo {
 
     Map<Class, List<AnnotationInfo>> cacheManager = new HashMap<Class, List<AnnotationInfo>>();
 
+    /**
+     * @param t 需要分析的class类信息
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * 根据传入的class对象尝试获取该对象的注解和反射类,如果没有缓存,分析后返回并添加到缓存记录中去
+     */
     public List<AnnotationInfo> getAnnotationInfoByClass(Class t) throws InvocationTargetException, IllegalAccessException {
         if (cacheManager.containsKey(t)) {
             return cacheManager.get(t);

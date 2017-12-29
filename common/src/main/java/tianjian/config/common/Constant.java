@@ -20,4 +20,10 @@ public class Constant {
      * 目录的索引
      */
     public static final String INDEX_MY = "myindex/mulu";
+
+    public static final String LOGSTASH_MYSQL = "logstash/mysql_template.config";
+
+    public static final String LOGSTASH_ORACLE = "logstash/oracle_template.config";
+
+
 }

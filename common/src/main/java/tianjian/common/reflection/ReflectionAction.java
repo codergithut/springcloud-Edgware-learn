@@ -11,6 +11,9 @@ import tianjian.exception.validate.ParamSizeException;
 
 import java.util.List;
 
+/**
+ * 对需要验证的对象进行反射验证
+ */
 @Service
 public class ReflectionAction {
 
@@ -22,13 +25,25 @@ public class ReflectionAction {
         this.cacheClassAnnotationInfo = cacheClassAnnotationInfo;
     }
 
+    /**
+     * class文件注释和反射方法缓存(Spring容器注入比较合理)set get方式只是为了方便测试
+     */
     @Autowired
     CacheClassAnnotationInfo cacheClassAnnotationInfo;
 
+    /**
+     *
+     * @param t
+     * @throws Exception
+     * 需要检查的bean对象
+     */
     public void  checkObject(Object t) throws Exception {
 
         List<AnnotationInfo> annotationInfos = cacheClassAnnotationInfo.getAnnotationInfoByClass(t.getClass());
 
+        /**
+         * 获取当前类的注解信息并对改注解信息进行验证
+         */
         for(AnnotationInfo ann : annotationInfos) {
             if(ann.getAnnotation() instanceof DefaultValue) {
                 Object value = ann.getField().get(t);

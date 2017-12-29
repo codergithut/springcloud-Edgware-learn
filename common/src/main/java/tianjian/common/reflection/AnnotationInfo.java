@@ -13,10 +13,19 @@ import java.util.Map;
 
 public class AnnotationInfo {
 
+    /**
+     * 注解实例
+     */
     private Object annotation;
 
+    /**
+     * 注解对应的反射字段
+     */
     private Field field;
 
+    /**
+     * 注解包含的值 目前@DefaultValue @SizeValue 注解会存在特定值的情况
+     */
     private Map<String,String> annotationValues;
 
     public Object getAnnotation() {
@@ -39,6 +48,12 @@ public class AnnotationInfo {
         return annotationValues;
     }
 
+    /**
+     *
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * 对某个方法的注解进行分析用于获取注解对应的值
+     */
     public void analysAnnotation() throws InvocationTargetException, IllegalAccessException {
 
         if(annotation instanceof DefaultValue) {
@@ -84,53 +99,4 @@ public class AnnotationInfo {
         return data;
     }
 
-
-    public AnnotationInfo getAnnotationInfo(Class c) throws InvocationTargetException, IllegalAccessException {
-        AnnotationInfo annotationInfo = new AnnotationInfo();
-        Field[] field = c.getDeclaredFields();
-        if(field != null){
-            for(Field fie : field){
-                if(!fie.isAccessible()){
-                    fie.setAccessible(true);
-                }
-                Object o = null;
-
-                /**
-                 * 如果该字段是有默认值选项
-                 */
-                DefaultValue defaultValue = fie.getAnnotation(DefaultValue.class);
-
-                /**
-                 * 该字段需要忽律
-                 */
-                IgnoreValue ignoreValue = fie.getAnnotation(IgnoreValue.class);
-
-                /**
-                 * 该字段不能为空
-                 */
-                NotNull notNull = fie.getAnnotation(NotNull.class);
-
-                if(defaultValue != null) {
-                    o = defaultValue;
-                }
-
-                if(ignoreValue != null) {
-                    o = ignoreValue;
-                }
-
-
-                if(notNull != null) {
-                    o = notNull;
-                }
-
-                if( o != null) {
-                    annotationInfo.setAnnotation(o);
-                    annotationInfo.setField(fie);
-                    annotationInfo.analysAnnotation();
-                }
-
-            }
-        }
-        return annotationInfo;
-    }
 }
