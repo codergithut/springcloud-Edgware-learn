@@ -19,42 +19,42 @@ public class ReflectionBean {
 
         //获取字段上的注解值
         Field[] field = c.getDeclaredFields();
-        if(field != null){
-            for(Field fie : field){
-                if(!fie.isAccessible()){
-                    fie.setAccessible(true);
-                }
-                Object o = null;
-
-                /**
-                 * 如果该字段是有默认值选项
-                 */
-                DefaultValue defaultValue = fie.getAnnotation(DefaultValue.class);
-                if(defaultValue != null) {
-                    o = defaultValue;
-                }
-
-                /**
-                 * 该字段需要忽律
-                 */
-                IgnoreValue ignoreValue = fie.getAnnotation(IgnoreValue.class);
-                if(ignoreValue != null) {
-                    o = ignoreValue;
-                }
-
-                /**
-                 * 该字段不能为空
-                 */
-                NotNull notNull = fie.getAnnotation(NotNull.class);
-                if(notNull != null) {
-                    o = notNull;
-                }
-
-                if(o != null) {
-                    detailField(o, fie, t);
-                }
-            }
-        }
+//        if(field != null){
+//            for(Field fie : field){
+//                if(!fie.isAccessible()){
+//                    fie.setAccessible(true);
+//                }
+//                Object o = null;
+//
+//                /**
+//                 * 如果该字段是有默认值选项
+//                 */
+//                DefaultValue defaultValue = fie.getAnnotation(DefaultValue.class);
+//                if(defaultValue != null) {
+//                    o = defaultValue;
+//                }
+//
+//                /**
+//                 * 该字段需要忽律
+//                 */
+//                IgnoreValue ignoreValue = fie.getAnnotation(IgnoreValue.class);
+//                if(ignoreValue != null) {
+//                    o = ignoreValue;
+//                }
+//
+//                /**
+//                 * 该字段不能为空
+//                 */
+//                NotNull notNull = fie.getAnnotation(NotNull.class);
+//                if(notNull != null) {
+//                    o = notNull;
+//                }
+//
+//                if(o != null) {
+//                    detailField(o, fie, t);
+//                }
+//            }
+//        }
     }
 
     private static <T> void detailField(Object validate,Field field, T t) throws IllegalAccessException, NotNullException {
