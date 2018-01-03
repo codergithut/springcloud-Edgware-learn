@@ -5,7 +5,7 @@ import tianjian.domain.logstash.LogStashInfo;
 
 import java.io.IOException;
 
-import static tianjian.config.common.Constant.LOGSTASH_MYSQL;
+import static tianjian.common.Constant.LOGSTASH_MYSQL;
 
 public class TestLogstashConfigFile {
 
@@ -15,13 +15,13 @@ public class TestLogstashConfigFile {
         logStashInfo.setEl_host("127.0.0.1");
         logStashInfo.setEl_port("9200");
         logStashInfo.setEl_index("test");
-        logStashInfo.setDb_sql("SELECT * from ZHJG_JSYDBP_PC");
-        logStashInfo.setDb_username("tianjain");
-        logStashInfo.setDb_password("tianjian");
-        logStashInfo.setDb_url("jdbc:oracle:thin:@//172.24.18.134:1521/orcl");
-        logStashInfo.setDb_connection_path("D:/es/logstash-6.1.0/bin/ojdbc6-11.2.0.4.jar");
+        logStashInfo.setDb_sql("SELECT * from test");
+        logStashInfo.setDb_username("root");
+        logStashInfo.setDb_password("root");
+        logStashInfo.setDb_url("jdbc:mysql://localhost/mysql?serverTimezone=UTC");
+        logStashInfo.setDb_connection_path("E:/Workbench/Maven/Repository/mysql/mysql-connector-java/5.1.41/mysql-connector-java-5.1.41.jar");
 
-        logStashInfo.saveLogStashInfoAsFile(LOGSTASH_MYSQL, "mysql.config");
+        logStashInfo.saveLogStashInfoAsFile(LOGSTASH_MYSQL, "D:\\es\\logstash\\logstash-5.6.2\\bin\\logstash1.config");
 
     }
 }

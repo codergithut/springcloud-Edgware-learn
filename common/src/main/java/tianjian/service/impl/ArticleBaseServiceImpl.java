@@ -15,8 +15,8 @@ import tianjian.util.EsUtil;
 import java.io.IOException;
 import java.util.List;
 
-import static tianjian.config.common.Constant.INDEX_ARTICLE;
-import static tianjian.config.common.Constant.INDEX_COMMENT;
+import static tianjian.common.Constant.INDEX_ARTICLE;
+import static tianjian.common.Constant.INDEX_COMMENT;
 
 
 /**

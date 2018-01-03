@@ -13,7 +13,7 @@ import tianjian.util.EsUtil;
 import java.io.IOException;
 import java.util.List;
 
-import static tianjian.config.common.Constant.INDEX_MY;
+import static tianjian.common.Constant.INDEX_MY;
 
 @Service
 public class IndexServcieImpl implements IndexService {

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
-import static tianjian.config.common.Constant.SEARCH_DSL;
+import static tianjian.common.Constant.SEARCH_DSL;
 
 
 public class EsUtil {
