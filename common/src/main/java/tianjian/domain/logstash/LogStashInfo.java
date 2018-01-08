@@ -33,6 +33,8 @@ public class LogStashInfo {
     @NotNull
     private String db_sql;
 
+    private String dbType;
+
     public String getEl_host() {
         return el_host;
     }
@@ -95,6 +97,14 @@ public class LogStashInfo {
 
     public void setDb_sql(String db_sql) {
         this.db_sql = db_sql;
+    }
+
+    public String getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(String dbType) {
+        this.dbType = dbType;
     }
 
     public boolean saveLogStashInfoAsFile(String templatePath, String file) throws IOException {

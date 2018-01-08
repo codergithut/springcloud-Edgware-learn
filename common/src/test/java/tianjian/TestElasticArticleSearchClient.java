@@ -3,13 +3,20 @@ package tianjian;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import tianjian.domain.elas.Article;
 import tianjian.domain.elas.Comment;
+import tianjian.domain.elas.search.DSLParam;
+import tianjian.domain.elas.search.Fuzziness;
 import tianjian.util.EsUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class TestElasticArticleSearchClient {
@@ -18,6 +25,7 @@ public class TestElasticArticleSearchClient {
 
 
     @Before
+    @Ignore
     public void initRestClient() throws IOException, InterruptedException {
         restClient = RestClient.builder(
                 new HttpHost("127.0.0.1", 9200, "http")).build();
@@ -79,11 +87,18 @@ public class TestElasticArticleSearchClient {
 //        commentElasticSearchPage1.setCount(1);
 //        commentElasticSearchPage1 =EsUtil.searchBeanFrommEs("comment/abusivearea", "714f83f6-f612-4e17-991b-43d22fae22f4", "replyid", restClient,commentElasticSearchPage1, Comment.class);
 //
-//        ElasticSearchPage<Article> articleElasticSearchPage = new ElasticSearchPage<Article>();
-//        articleElasticSearchPage.setCount(1);
-//        articleElasticSearchPage =EsUtil.searchBeanFrommEs("article/freezone", "a27da27f-29ff-4ee2-8c68-c3d48da9db94", "answersid", restClient,articleElasticSearchPage, Article.class);
-//
 
+        PageRequest page = new PageRequest(10, 6);
+        Fuzziness fuzziness = new Fuzziness();
+        List<String> data = new ArrayList<String>();
+        data.add("describe");
+        data.add("author");
+        data.add("htmlcontent");
+        data.add("title");
+        fuzziness.setFields(data);
+        fuzziness.setFuzziness("AUTO");
+        fuzziness.setQuery("tes");
+        PageImpl<Article> articles =EsUtil.searchBeanFzinessFrommEs("article/freezone", new DSLParam(),  restClient,page, Article.class,fuzziness);
         System.out.println("xx");
 
     }

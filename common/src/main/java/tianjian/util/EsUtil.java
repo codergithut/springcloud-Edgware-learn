@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import tianjian.domain.elas.EsEntity;
 import tianjian.domain.elas.search.DSLParam;
+import tianjian.domain.elas.search.Fuzziness;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -83,7 +84,7 @@ public class EsUtil {
      * @throws IOException
      * @description 查询文章信息
      */
-    public static <T extends EsEntity> PageImpl<T> searchBeanFrommEs(String index, DSLParam dslParam, RestClient restClient, PageRequest page, Class<T> t) throws IOException, InterruptedException {
+    public static <T extends EsEntity> PageImpl<T> searchBeanFrommEs(String index, DSLParam dslParam, RestClient restClient, PageRequest page, Class<T> t,HttpEntity httpEntity) throws IOException, InterruptedException {
         String searchDSL = SEARCH_DSL.replace("${index}",index)
                 .replace("${size}", page.getPageSize() + "")
                 .replace("${from}", (page.getPageNumber()-1) * page.getPageSize() + "");
@@ -103,11 +104,38 @@ public class EsUtil {
         }
 
         Response response = commonDoEs("GET", searchDSL,
-                null, restClient);
+                httpEntity, restClient);
         String s = EntityUtils.toString(response.getEntity());
         System.out.println();
         return changeStringToBean(s, t, page);
     }
+
+    public static <T extends EsEntity> PageImpl<T> searchBeanFrommEs(String index, DSLParam dslParam, RestClient restClient, PageRequest page, Class<T> t) throws IOException, InterruptedException {
+        return searchBeanFrommEs(index, dslParam, restClient, page, t,null);
+    }
+
+
+    /**
+     *
+     * @param index 索引
+     * @param restClient 客户端
+     * @param dslParam DSL查询条件封装
+     * @param t 需要转换的class
+     * @param <T> 泛型对象
+     * @return
+     * @throws IOException
+     * @description 查询文章信息
+     */
+    public static <T extends EsEntity> PageImpl<T> searchBeanFzinessFrommEs(String index, DSLParam dslParam, RestClient restClient, PageRequest page, Class<T> t, Fuzziness fuzziness) throws IOException, InterruptedException {
+        Map<String, Object> entity = new HashMap<String,Object>();
+        Map<String, Object> value = new HashMap<String,Object>();
+        value.put("multi_match", fuzziness);
+        entity.put("query", value);
+        System.out.println(JSON.toJSONString(entity));
+        HttpEntity httpEntity = new NStringEntity(JSON.toJSONString(entity), "UTF-8");
+        return searchBeanFrommEs(index, dslParam, restClient, page, t,httpEntity);
+    }
+
 
 
     /**

@@ -1,5 +1,8 @@
 package tianjian.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
     /**
      * 查询DSL语言
@@ -24,6 +27,13 @@ public class Constant {
     public static final String LOGSTASH_MYSQL = "logstash/template/mysql_template.config";
 
     public static final String LOGSTASH_ORACLE = "logstash/template/oracle_template.config";
+
+    public static Map<String,String> PARAMS = new HashMap<String,String>();
+
+    static {
+        PARAMS.put("mysql", LOGSTASH_MYSQL);
+        PARAMS.put("oracle", LOGSTASH_ORACLE);
+    }
 
 
 }

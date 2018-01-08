@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import tianjian.domain.elas.Article;
 import tianjian.domain.elas.Comment;
 import tianjian.domain.elas.search.DSLParam;
+import tianjian.domain.elas.search.Fuzziness;
 import tianjian.domain.elas.search.SortEnum;
 import tianjian.service.ArticleBaseService;
 import tianjian.util.EsUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static tianjian.common.Constant.INDEX_ARTICLE;
@@ -51,7 +53,6 @@ public class ArticleBaseServiceImpl implements ArticleBaseService {
     public PageImpl<Article> getArticleBydCategoryid(String categoryid, PageRequest pageRequest) throws IOException, InterruptedException {
         DSLParam dslParam = new DSLParam();
         dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("categoryid", categoryid);
-
         return EsUtil.searchBeanFrommEs(INDEX_ARTICLE,dslParam, restClient, pageRequest, Article.class);
     }
 
@@ -73,6 +74,20 @@ public class ArticleBaseServiceImpl implements ArticleBaseService {
         DSLParam dslParam = new DSLParam();
         dslParam.setSortParam("updatetime",  SortEnum.DESC).setSearchParam("replyid", articleId);
         return EsUtil.searchBeanFrommEs(INDEX_COMMENT,dslParam, restClient,pageRequest, Comment.class);
+    }
+
+    @Override
+    public PageImpl<Article> getArticleByFuzzines(String query, PageRequest pageRequest) throws IOException, InterruptedException {
+        DSLParam dslParam = new DSLParam();
+        Fuzziness fuzziness = new Fuzziness();
+        List<String> data = new ArrayList<String>();
+        data.add("describe");
+        data.add("author");
+        data.add("htmlcontent");
+        data.add("title");
+        fuzziness.setFields(data);
+        fuzziness.setFuzziness("AUTO");
+        return EsUtil.searchBeanFzinessFrommEs(INDEX_ARTICLE,dslParam, restClient, pageRequest, Article.class, fuzziness);
     }
 
     @Override

@@ -41,6 +41,12 @@ public interface ArticleBaseService {
     PageImpl<Comment> getCommentByAritcleId(String articleId, PageRequest pageRequest) throws IOException, InterruptedException;
 
     /**
+     * @param query  需要查询的字段
+     * @throws IOException
+     */
+    PageImpl<Article> getArticleByFuzzines(String query, PageRequest pageRequest) throws IOException, InterruptedException;
+
+    /**
      *
      * @param commmentId 评论ID
      * @return 获取评论该评论的ID
